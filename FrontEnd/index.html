@@ -1,0 +1,25 @@
+<!doctype html>
+
+<html ng-app="agenda">
+	
+	<head>
+		<title>Hello World !</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+		<script src="controller.js"></script>
+	</head>
+
+	<body ng-controller="mainController">
+	
+		Search : <input type="text" ng-model="name"/>
+		
+		<ul>
+			<li ng-repeat="contact in contacts | filter:name">{{contact}}</li>
+		</ul>
+		
+		Firstname = <input type="text" ng-model="firstname"/>
+		Lastname = <input type="text" ng-model="lastname"/>
+		<button ng-click="addContact()">Add</button>
+		
+	</body>
+
+</html>
