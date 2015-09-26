@@ -46,23 +46,24 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public boolean add(@RequestBody User user) {
-		if(!isAlreadyExist(user.getPseudo())) {
+		if(!user.getPseudo().matches("\\s*") && !user.getPassword().matches("\\s*") && !isAlreadyExist(user.getPseudo())) {
 			user.setId(userIdCounter++);
 			return users.add(user);
 		}
 		return false;
 	}
 	
-	@GET
+	@POST
 	@Path("authenticate")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean authenticate(@QueryParam("pseudo") String pseudo, @QueryParam("password") String password) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public User authenticate(@RequestBody User userToAuthenticate) {
 		for(User user : users) {
-			if(user.getPseudo().equals(pseudo) && user.getPassword().equals(password)) {
-				return true;
+			if(user.getPseudo().equals(userToAuthenticate.getPseudo()) && user.getPassword().equals(userToAuthenticate.getPassword())) {
+				return user;
 			}
 		}
-		return false;
+		return null;
 	}
 	
 }

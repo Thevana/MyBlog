@@ -1,24 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 
-<html ng-app="agenda">
+<html ng-app="myBlogApp">
 	
 	<head>
-		<title>Hello World !</title>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-		<script src="controller.js"></script>
+		<title>MyBlog</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<!--<link href="index.css" rel="stylesheet" type="text/css"/>-->
+		<script type="text/javascript" src="https://code.angularjs.org/1.4.5/angular.min.js"></script>
+		<script type="text/javascript" src="https://code.angularjs.org/1.4.5/angular-route.min.js"></script>
+		<script type="text/javascript" src="appConfig.js"></script>
+		<script type="text/javascript" src="appControllers.js"></script>
 	</head>
 
-	<body ng-controller="mainController">
-	
-		Search : <input type="text" ng-model="name"/>
+	<body>
 		
-		<ul>
-			<li ng-repeat="contact in contacts | filter:name">{{contact}}</li>
-		</ul>
+		<header>
+			<h1>MyBlog</h1>
+		</header>
 		
-		Firstname = <input type="text" ng-model="firstname"/>
-		Lastname = <input type="text" ng-model="lastname"/>
-		<button ng-click="addContact()">Add</button>
+		<div ng-view>
+		</div>
+		
+		<footer>
+			<p>Copyright © 2015 by J&amp;Z Corporation</p>
+		</footer>
 		
 	</body>
 
