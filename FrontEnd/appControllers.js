@@ -1,19 +1,18 @@
 var protocol = "http";
 var host = "localhost";
 var port = "8080";
-var connectedUser = null;
 
-var appControllers = angular.module("appControllers", []);
+var appControllers = angular.module("appControllers", ["ngCookies"]);
 
-appControllers.controller("homeController", function($scope, $location, $http) {
+appControllers.controller("homeController", ["$scope", "$http", "$location", "$cookies", function($scope, $http, $location, $cookies) {
 	
-	if(connectedUser !== null) {
+	if($cookies.getObject("connectedUser") !== undefined) {
 		$location.path("/timeline");
 	}
 	
 	// Add new user
 	$scope.addUser = function() {
-		$scope.message = "";
+		$scope.message = "Veuillez patienter ...";
 		if($scope.pseudo !== undefined && $scope.password !== undefined) {
 			var newUser = {
 				pseudo : $scope.pseudo,
@@ -23,6 +22,7 @@ appControllers.controller("homeController", function($scope, $location, $http) {
 			.then(function(resp) {
 				if(resp.data) {
 					alert("Votre compte a été créé avec succès ! \nVous pouvez dès à présent vous authentifier.");
+					$scope.message = "";
 				}
 				else {
 					$scope.message = "Votre 'Pseudo' ou 'Mot de passe' est incorrect, ou votre 'Pseudo' existe déjà ! \nVeuillez réessayez.";
@@ -40,7 +40,7 @@ appControllers.controller("homeController", function($scope, $location, $http) {
 	
 	// Authenticate user
 	$scope.authentificateUser = function() {
-		$scope.message = "";
+		$scope.message = "Veuillez patienter ...";
 		if($scope.pseudo !== undefined && $scope.password !== undefined) {
 			var userToAuthenticate = {
 				pseudo : $scope.pseudo,
@@ -48,9 +48,13 @@ appControllers.controller("homeController", function($scope, $location, $http) {
 			}
 			$http.post(protocol + "://" + host + ":" + port + "/user/authenticate", userToAuthenticate)
 			.then(function(resp) {
-				if(resp.data !== "") {
-					connectedUser = resp.data
-					$scope.message = "Connexion à MyBlog en cours ...";
+				if(resp.data !== -1) {
+					var connectedUser = {
+						id : resp.data,
+						pseudo : userToAuthenticate.pseudo
+					}
+					$cookies.putObject("connectedUser", connectedUser);
+					$scope.message = "Chargement en cours ...";
 					$location.path("/timeline");
 				}
 				else {
@@ -67,18 +71,21 @@ appControllers.controller("homeController", function($scope, $location, $http) {
 		$scope.password = "";
 	}
 	
-});
+}]);
 
-appControllers.controller("timelineController", function($scope, $location, $http) {
+appControllers.controller("timelineController", ["$scope", "$http", "$location", "$cookies", function($scope, $http, $location, $cookies) {
 	
-	if(connectedUser !== null) {
-		$scope.header = "Bienvenue " + connectedUser.pseudo + " sur MyBlog !";
+	if($cookies.getObject("connectedUser") == undefined) {
+		$location.path("/");
+	}
+	else {
+		$scope.header = "Salut " + $cookies.getObject("connectedUser").pseudo + " !";
 	}
 	
 	// Disconnect user
 	$scope.disconnectUser = function() {
-		connectedUser = null;
+		$cookies.remove("connectedUser");
 		$location.path("/");
 	}
 	
-});
+}]);

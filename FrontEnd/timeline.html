@@ -1,8 +1,15 @@
 <div ng-controller="timelineController">
+	
 	<div>
 		<p>
 			{{header}}&nbsp;&nbsp;<button ng-click="disconnectUser()">Se déconnecter</button>
 		</p>
+	</div>
+	
+	<div>
+		<h2>Ajouter un article</h2>
+		<textarea type="text" rows="5" cols="50" placeholder="Entrez votre article ici" ng-model="article"></textarea>
+		<button ng-click="addArticle()">Ajouter</button>
 	</div>
 	
 	<div>
@@ -11,4 +18,5 @@
 			{{content}}
 		</div>
 	</div>
+
 </div>

@@ -57,13 +57,13 @@ public class UserService {
 	@Path("authenticate")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public User authenticate(@RequestBody User userToAuthenticate) {
+	public long authenticate(@RequestBody User userToAuthenticate) {
 		for(User user : users) {
 			if(user.getPseudo().equals(userToAuthenticate.getPseudo()) && user.getPassword().equals(userToAuthenticate.getPassword())) {
-				return user;
+				return user.getId();
 			}
 		}
-		return null;
+		return -1;
 	}
 	
 }
