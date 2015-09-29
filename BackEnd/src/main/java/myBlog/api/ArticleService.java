@@ -34,6 +34,13 @@ public class ArticleService {
 		return articles;
 	}
 	
+	@GET
+	@Path("isAnyArticle")
+	@Produces(MediaType.APPLICATION_JSON)
+	public boolean isAnyArticle() {
+		return !articles.isEmpty();
+	}
+	
 	@POST
 	@Path("add")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -43,7 +50,12 @@ public class ArticleService {
 		article.setDateOfCreation(dateFormatter.format(new Date()));
 		article.setDateOfLastUpdate(article.getDateOfCreation());
 		article.setComments(new ArrayList<Comment>());
-		return articles.add(article);
+		
+		/* On place l'article créé en tête de file dans l'historique */
+		articles.add(0, article);
+		
+		/* On vérifie si l'article se trouve bien dans la liste */
+		return articles.contains(article);
 	}
 	
 	@POST
@@ -56,7 +68,13 @@ public class ArticleService {
 				article.setDateOfLastUpdate(dateFormatter.format(new Date()));
 				article.setTitle(updateArticle.getTitle());
 				article.setText(updateArticle.getText());
-				return true;
+				
+				/* On replace l'article en tête de file vu qu'il a été modifié */
+				Article articleToReintegrate = articles.remove(articles.indexOf(article));
+				articles.add(0, articleToReintegrate);
+				
+				/* On vérifie si l'article se trouve bien dans la liste */
+				return articles.contains(articleToReintegrate);
 			}
 		}
 		return false;

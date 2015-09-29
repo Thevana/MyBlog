@@ -8,11 +8,18 @@
 	
 	<div>
 		<h2>Ajouter un article</h2>
-		<textarea type="text" rows="5" cols="50" placeholder="Entrez votre article ici" ng-model="article"></textarea>
-		<button ng-click="addArticle()">Ajouter</button>
+		
+		<p>
+			<input type="text" size="67" placeholder="Titre" ng-model="title"/>
+			<br/>
+			<textarea type="text" rows="5" cols="50" placeholder="Article" ng-model="text"></textarea>
+			<button ng-click="addArticle()">Ajouter</button>
+		</p>
+	
+		<p><pre>{{message}}</pre></p>
 	</div>
 	
-	<div>
+	<div ng-show="timelineState">
 		<h2>Timeline</h2>
 		<div>
 			{{content}}
