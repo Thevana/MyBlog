@@ -1,6 +1,7 @@
 package myBlog.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.inject.Named;
 import javax.ws.rs.Consumes;
@@ -27,6 +28,20 @@ public class UserService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<User> all() {
 		return users;
+	}
+	
+	@GET
+	@Path("getPseudoFromId")
+	@Produces(MediaType.APPLICATION_JSON)
+	public HashMap<String, String> getPseudoFromId(@QueryParam("id") long id) {
+		HashMap<String, String> res = new HashMap<String, String>();
+		for(User user : users) {
+			if(user.getId() == id) {
+				res.put("pseudo", user.getPseudo());
+				return res;
+			}
+		}
+		return null;
 	}
 	
 	@GET

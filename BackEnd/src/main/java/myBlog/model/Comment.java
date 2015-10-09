@@ -3,7 +3,7 @@ package myBlog.model;
 public class Comment {
 
 	private long id;
-	private long userId; // id du créateur du commentaire
+	private long ownerId; // id du créateur du commentaire
 	private long articleId;
 	private String dateOfCreation;
 	private String dateOfLastUpdate;
@@ -17,12 +17,12 @@ public class Comment {
 		this.id = id;
 	}
 
-	public long getUserId() {
-		return userId;
+	public long getOwnerId() {
+		return ownerId;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUserId(int ownerId) {
+		this.ownerId = ownerId;
 	}
 
 	public long getArticleId() {

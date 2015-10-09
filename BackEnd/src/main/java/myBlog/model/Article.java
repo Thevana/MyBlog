@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Article {
 	
 	private long id;
-	private long userId; // id du créateur de l'article
+	private long ownerId; // id du créateur de l'article
 	private String dateOfCreation;
 	private String dateOfLastUpdate;
 	private String title;
@@ -21,12 +21,12 @@ public class Article {
 		this.id = id;
 	}
 	
-	public long getUserId() {
-		return userId;
+	public long getOwnerId() {
+		return ownerId;
 	}
 	
-	public void setUserId(long userId) {
-		this.userId = userId;
+	public void setOwnerId(long ownerId) {
+		this.ownerId = ownerId;
 	}
 	
 	public String getDateOfCreation() {

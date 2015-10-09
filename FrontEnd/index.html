@@ -6,24 +6,26 @@
 		<title>MyBlog</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<!--<link href="index.css" rel="stylesheet" type="text/css"/>-->
-		<script type="text/javascript" src="https://code.angularjs.org/1.4.5/angular.min.js"></script>
-		<script type="text/javascript" src="https://code.angularjs.org/1.4.5/angular-route.min.js"></script>
-		<script type="text/javascript" src="https://code.angularjs.org/1.4.5/angular-cookies.min.js"></script>
+		<script type="text/javascript" src="https://code.angularjs.org/1.4.6/angular.min.js"></script>
+		<script type="text/javascript" src="https://code.angularjs.org/1.4.6/angular-route.min.js"></script>
+		<script type="text/javascript" src="https://code.angularjs.org/1.4.6/angular-cookies.min.js"></script>
 		<script type="text/javascript" src="appConfig.js"></script>
 		<script type="text/javascript" src="appControllers.js"></script>
 	</head>
 
 	<body>
-		<header>
-			<h1>MyBlog</h1>
-		</header>
-		
-		<div ng-view>
+		<div style="width : 1000px; height : 100%">
+			<div>
+				<h1>MyBlog</h1>
+			</div>
+			
+			<div ng-view>
+			</div>
+			
+			<div>
+				<p>Copyright © 2015 by J&amp;Z Corporation</p>
+			</div>
 		</div>
-		
-		<footer>
-			<p>Copyright © 2015 by J&amp;Z Corporation</p>
-		</footer>
 	</body>
 
 </html>
