@@ -9,12 +9,17 @@ appControllers.controller("homeController", ["$scope", "$http", "$route", "$loca
 	
 	// Vérification au chargement de la page
 	if($cookies.getObject("connectedUser") !== undefined) {
-		$location.path("/timeline");
+		if($cookies.getObject("articleToUpdate") !== undefined) {
+			$location.path("/timeline/updateArticle");
+		}
+		else {
+			$location.path("/timeline");
+		}
 	}
 	
 	// Add new user
 	$scope.addUser = function() {
-		$scope.message = "Veuillez patienter ...";
+		$scope.homeMessage = "Veuillez patienter ...";
 		if($scope.pseudo !== undefined && $scope.password !== undefined) {
 			var newUser = {
 				pseudo : $scope.pseudo,
@@ -24,25 +29,25 @@ appControllers.controller("homeController", ["$scope", "$http", "$route", "$loca
 			.then(function(resp) {
 				if(resp.data) {
 					alert("Votre compte a été créé avec succès ! \nVous pouvez dès à présent vous authentifier.");
-					$scope.message = "";
+					$scope.pseudo = "";
+					$scope.password = "";
+					$scope.homeMessage = "";
 				}
 				else {
-					$scope.message = "Votre 'Pseudo' ou 'Mot de passe' est incorrect, ou votre 'Pseudo' existe déjà ! \nVeuillez réessayez.";
+					$scope.homeMessage = "Votre 'Pseudo' ou 'Mot de passe' est incorrect, ou votre 'Pseudo' existe déjà ! \nVeuillez réessayez.";
 				}
 			}, function(resp) {
-				$scope.message = "Erreur de connexion interne ! \nVeuillez réessayer ultérieurement.";
+				$scope.homeMessage = "Erreur de connexion interne ! \nVeuillez réessayer ultérieurement.";
 			});
 		}
 		else {
-			$scope.message = "Le champs 'Pseudo' ou 'Mot de passe' est vide ! \nVeuillez réessayez.";
+			$scope.homeMessage = "Le champs 'Pseudo' ou 'Mot de passe' est vide ! \nVeuillez réessayez.";
 		}
-		$scope.pseudo = "";
-		$scope.password = "";
 	}
 	
 	// Authenticate user
 	$scope.authentificateUser = function() {
-		$scope.message = "Veuillez patienter ...";
+		$scope.homeMessage = "Veuillez patienter ...";
 		if($scope.pseudo !== undefined && $scope.password !== undefined) {
 			var userToAuthenticate = {
 				pseudo : $scope.pseudo,
@@ -55,22 +60,22 @@ appControllers.controller("homeController", ["$scope", "$http", "$route", "$loca
 						id : resp.data,
 						pseudo : userToAuthenticate.pseudo
 					}
+					$scope.pseudo = "";
+					$scope.password = "";
+					$scope.homeMessage = "Chargement en cours ...";
 					$cookies.putObject("connectedUser", connectedUser);
-					$scope.message = "Chargement en cours ...";
 					$location.path("/timeline");
 				}
 				else {
-					$scope.message = "Votre 'Pseudo' ou 'Mot de passe' est incorrect ! \nVeuillez réessayez.";
+					$scope.homeMessage = "Votre 'Pseudo' ou 'Mot de passe' est incorrect ! \nVeuillez réessayez.";
 				}
 			}, function(resp) {
-				$scope.message = "Erreur de connexion interne ! \nVeuillez réessayer ultérieurement.";
+				$scope.homeMessage = "Erreur de connexion interne ! \nVeuillez réessayer ultérieurement.";
 			});
 		}
 		else {
-			$scope.message = "Le champs 'Pseudo' ou 'Mot de passe' est vide ! \nVeuillez réessayez.";
+			$scope.homeMessage = "Le champs 'Pseudo' ou 'Mot de passe' est vide ! \nVeuillez réessayez.";
 		}
-		$scope.pseudo = "";
-		$scope.password = "";
 	}
 	
 }]);
@@ -82,23 +87,28 @@ appControllers.controller("timelineController", ["$scope", "$http", "$route", "$
 		$location.path("/");
 	}
 	else {
-		$scope.header = "Salut " + $cookies.getObject("connectedUser").pseudo + " !";
-		
-		/* S'il y a au moins un article on affiche le timeline, sinon on le cache */
-		$http.get(serverUrl + "/article/isAnyArticle")
-		.then(function(resp) {
-			$scope.showTimelineState = resp.data;
-			if($scope.showTimelineState) {
-				$http.get(serverUrl + "/article/all")
-				.then(function(resp) {
-					$scope.articles = resp.data;
-				}, function(resp) {
-					alert(JSON.stringify(resp));
-				});
-			}
-		}, function(resp) {
-			alert(JSON.stringify(resp));
-		});
+		if($cookies.getObject("articleToUpdate") !== undefined) {
+			$location.path("/timeline/updateArticle");
+		}
+		else {		
+			$scope.header = "Salut " + $cookies.getObject("connectedUser").pseudo + " !";
+			
+			/* S'il y a au moins un article on affiche le timeline, sinon on le cache */
+			$http.get(serverUrl + "/article/isAnyArticle")
+			.then(function(resp) {
+				$scope.showTimelineState = resp.data;
+				if($scope.showTimelineState) {
+					$http.get(serverUrl + "/article/all")
+					.then(function(resp) {
+						$scope.articles = resp.data;
+					}, function(resp) {
+						alert(JSON.stringify(resp));
+					});
+				}
+			}, function(resp) {
+				alert(JSON.stringify(resp));
+			});
+		}
 	}
 	
 	// Disconnect user
@@ -128,7 +138,7 @@ appControllers.controller("timelineController", ["$scope", "$http", "$route", "$
 	
 	// Add new article
 	$scope.addArticle = function() {
-		$scope.message = "Veuillez patienter ...";
+		$scope.addArticleMessage = "Veuillez patienter ...";
 		if(($scope.title !== undefined && $scope.title !== null && $scope.title !== "") && ($scope.text !== undefined && $scope.text !== null && $scope.text !== "")) {
 			var newArticle = {
 				ownerId : $cookies.getObject("connectedUser").id,
@@ -139,56 +149,32 @@ appControllers.controller("timelineController", ["$scope", "$http", "$route", "$
 			.then(function(resp) {
 				if(resp.data) {
 					alert("Votre article a été ajouté avec succès ! \nVous pouvez dès à présent le voir dans le 'Timeline'.");
-					$scope.message = "";
+					$scope.updatedArticleTitle = "";
+					$scope.updatedArticleText = "";
+					$scope.addArticleMessage = "";
 					$route.reload();
 				}
 				else {
-					$scope.message = "Le champs 'Titre' ou 'Article' est incorrect ! \nVeuillez réessayez.";
+					$scope.addArticleMessage = "Le champs 'Titre' ou 'Article' est incorrect ! \nVeuillez réessayez.";
 				}
 			}, function(resp) {
-				$scope.message = "Erreur de connexion interne ! \nVeuillez réessayer ultérieurement.";
+				$scope.addArticleMessage = "Erreur de connexion interne ! \nVeuillez réessayer ultérieurement.";
 			});
 		}
 		else {
-			$scope.message = "Le champs 'Titre' ou 'Article' est vide ! \nVeuillez réessayez.";
+			$scope.addArticleMessage = "Le champs 'Titre' ou 'Article' est vide ! \nVeuillez réessayez.";
 		}
-		$scope.title = "";
-		$scope.text = "";
 	}
 	
-	// Update article
-	$scope.updateArticle = function(articleId, oldArticleTitle, oldArticleText) {
-		var updatedArticleTitle = prompt("ETAPE 1/2 : Modifiez le titre de votre article", oldArticleTitle);
-		
-		if(updatedArticleTitle !== null && updatedArticleTitle !== "") {
-			var updatedArticleText = prompt("ETAPE 2/2 : Modifiez le texte de votre article", oldArticleText);
-			
-			if(updatedArticleText !== null && updatedArticleText !== "") {
-				var updatedArticle = {
-					id : articleId,
-					title : updatedArticleTitle,
-					text : updatedArticleText
-				}
-				$http.post(serverUrl + "/article/update", updatedArticle)
-				.then(function(resp) {
-					if(resp.data) {
-						alert("Votre article a été modifié avec succès !");
-						$route.reload();
-					}
-					else {
-						alert("Le champs 'Titre' ou 'Article' est incorrect ! \nVeuillez réessayez.");
-					}
-				}, function(resp) {
-					alert("Erreur de connexion interne ! \nVeuillez réessayer ultérieurement.");
-				});
-			}
-			else if(updatedArticleText !== null && updatedArticleText === "") {
-				alert("Le champs 'Article' est vide ! \nVeuillez réessayer.");
-			}
+	// Update article (Step 1/2)
+	$scope.openUpdateArticle = function(articleId, articleTitleToUpdate, articleTextToUpdate) {
+		var articleToUpdate = {
+			id : articleId,
+			title : articleTitleToUpdate,
+			text : articleTextToUpdate
 		}
-		else if(updatedArticleTitle !== null && updatedArticleTitle === "") {
-			alert("Le champs 'Titre' est vide ! \nVeuillez réessayer.");
-		}
+		$cookies.putObject("articleToUpdate", articleToUpdate);
+		$location.path("/timeline/updateArticle");
 	}
 	
 	// Delete article
@@ -223,7 +209,7 @@ appControllers.controller("timelineController", ["$scope", "$http", "$route", "$
 			$http.post(serverUrl + "/article/addComment", newComment)
 			.then(function(resp) {
 				if(resp.data) {
-					alert("Votre commentaire a été ajouté avec succès !.");
+					alert("Votre commentaire a été ajouté avec succès !");
 					$route.reload();
 				}
 				else {
@@ -239,8 +225,8 @@ appControllers.controller("timelineController", ["$scope", "$http", "$route", "$
 	}
 	
 	// Update comment
-	$scope.updateComment = function(commentId, oldCommentText) {
-		var updatedCommentText = prompt("Modifiez votre commentaire", oldCommentText);
+	$scope.updateComment = function(commentId, commentTextToUpdate) {
+		var updatedCommentText = prompt("Modifiez votre commentaire", commentTextToUpdate);
 		
 		if(updatedCommentText !== null && updatedCommentText !== "") {
 			var updatedComment = {
@@ -250,7 +236,7 @@ appControllers.controller("timelineController", ["$scope", "$http", "$route", "$
 			$http.post(serverUrl + "/article/updateComment", updatedComment)
 			.then(function(resp) {
 				if(resp.data) {
-					alert("Votre commentaire a été modifié avec succès !.");
+					alert("Votre commentaire a été modifié avec succès !");
 					$route.reload();
 				}
 				else {
@@ -285,3 +271,58 @@ appControllers.controller("timelineController", ["$scope", "$http", "$route", "$
 	}
 	
 }]);
+
+appControllers.controller("updateArticleController", ["$scope", "$http", "$route", "$location", "$cookies", function($scope, $http, $route, $location, $cookies) {
+	
+	if($cookies.getObject("connectedUser") == undefined) {
+		$location.path("/");
+	}
+	else {
+		if($cookies.getObject("articleToUpdate") == undefined) {
+			$location.path("/timeline");
+		}
+		else {
+			$scope.updatedArticleTitle = $cookies.getObject("articleToUpdate").title;
+			$scope.updatedArticleText = $cookies.getObject("articleToUpdate").text;
+		}
+	}
+	
+	// Update article (Step 2/2)
+	$scope.updateArticle = function() {
+		$scope.updateArticleMessage = "Veuillez patienter ...";
+		if(($scope.updatedArticleTitle !== undefined && $scope.updatedArticleTitle !== null && $scope.updatedArticleTitle !== "") && ($scope.updatedArticleText !== undefined && $scope.updatedArticleText !== null && $scope.updatedArticleText !== "")) {
+			var updatedArticle = {
+				id : $cookies.getObject("articleToUpdate").id,
+				title : $scope.updatedArticleTitle,
+				text : $scope.updatedArticleText
+			}
+			$http.post(serverUrl + "/article/update", updatedArticle)
+			.then(function(resp) {
+				if(resp.data) {
+					alert("Votre article a été modifié avec succès ! \nVous allez être redirigé vers le 'Timeline'.");
+					$scope.updatedArticleTitle = "";
+					$scope.updatedArticleText = "";
+					$scope.updateArticleMessage = "Redirection en cours ...";
+					$cookies.remove("articleToUpdate");
+					$location.path("/timeline");
+				}
+				else {
+					$scope.updateArticleMessage = "Le champs 'Titre' ou 'Article' est incorrect ! \nVeuillez réessayez.";
+				}
+			}, function(resp) {
+				$scope.updateArticleMessage = "Erreur de connexion interne ! \nVeuillez réessayer ultérieurement.";
+			});
+		}
+		else {
+			$scope.updateArticleMessage = "Le champs 'Titre' ou 'Article' est vide ! \nVeuillez réessayez.";
+		}
+	}
+	
+	$scope.cancel = function() {
+		$scope.updateArticleMessage = "Action annulé ! \nRedirection en cours ...";
+		$cookies.remove("articleToUpdate");
+		$location.path("/timeline");
+	}
+
+}]);
+

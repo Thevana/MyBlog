@@ -10,6 +10,10 @@ myBlogApp.config(["$routeProvider", function($routeProvider) {
 		templateUrl : "timeline.html",
 		controller: "timelineController"
 	})
+	.when("/timeline/updateArticle", {
+		templateUrl : "updateArticle.html",
+		controller: "updateArticleController"
+	})
 	.otherwise({
 		redirectTo : "/"
 	});

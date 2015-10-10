@@ -1,0 +1,12 @@
+<div ng-controller="updateArticleController">
+	<h2>Modification de l'article selectionné</h2>
+
+	<p>
+		<input type="text" size="67" placeholder="Titre" ng-model="updatedArticleTitle"/>
+		<br/>
+		<textarea type="text" style="resize : none" rows="5" cols="50" placeholder="Article" ng-model="updatedArticleText"></textarea>
+		<button ng-click="updateArticle()">Modifier</button>
+		<button ng-click="cancel()">Annuler</button>
+		<pre>{{updateArticleMessage}}</pre>
+	</p>
+</div>

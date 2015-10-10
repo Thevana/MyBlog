@@ -14,7 +14,7 @@
 			<br/>
 			<textarea type="text" style="resize : none" rows="5" cols="50" placeholder="Article" ng-model="text"></textarea>
 			<button ng-click="addArticle()">Ajouter</button>
-			<pre>{{message}}</pre>
+			<pre>{{addArticleMessage}}</pre>
 		</p>
 	</div>
 	
@@ -34,7 +34,7 @@
 					</p>
 					
 					<button ng-click="addComment(article.id)">Commenter</button>
-					<button ng-show="showAction(article.ownerId)" ng-click="updateArticle(article.id, article.title, article.text)">Modifier</button>
+					<button ng-show="showAction(article.ownerId)" ng-click="openUpdateArticle(article.id, article.title, article.text)">Modifier</button>
 					<button ng-show="showAction(article.ownerId)" ng-click="deleteArticle(article.id)">Supprimer</button>
 					
 					<ul style="border : 0.063em solid black" ng-repeat="comment in article.comments">
