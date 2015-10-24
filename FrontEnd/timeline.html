@@ -1,13 +1,9 @@
-<!-- @todo (début) : retirer les lignes suivantes avant la livraison -->
-<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
-<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<!-- @todo (fin) -->
-
 <div ng-controller="timelineController" class="col-md-12">
 	
 	<h2 class="text-primary text-center">{{header}}</h2>
 	
 	<div class="col-md-10 col-md-offset-10">
+		<button ng-click="goToChat()" class="btn btn-success">Chat</button>
 		<button ng-click="disconnectUser()" class="btn btn-danger">Se déconnecter</button>
 	</div>
 	

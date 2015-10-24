@@ -1,0 +1,26 @@
+<div ng-controller="chatController">
+	
+	<div class="col-md-10 col-md-offset-10">
+		<button ng-click="returnToTimeline()" class="btn btn-danger">Quitter</button>
+	</div>
+	
+	<div class="col-md-12">
+		<div class="col-md-10 col-md-offset-3">
+			<h3>Chat</h3>
+		</div>
+		
+		<form>
+			<div class="col-md-6 col-md-offset-3">
+				<div class="form-group">
+					<input type="text" placeholder="Tapez un message..." class="form-control" ng-model="messageInput" ng-keypress="sendMessage($event)"/>
+				</div>
+			</div>
+		</form>
+		<div class="col-md-10 col-md-offset-3">
+			<dl ng-repeat="message in messages" class="dl-horizontal">
+				<dt>{{message.owner}}</dt>
+				<dd>{{message.text}}&nbsp; [ Il y a&nbsp;{{message.dateOfCreation}}&nbsp;minutes ]</dd>
+			</dl>
+		</div>
+	</div>
+</div>

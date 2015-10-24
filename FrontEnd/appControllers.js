@@ -111,6 +111,11 @@ appControllers.controller("timelineController", ["$scope", "$http", "$route", "$
 		}
 	}
 	
+	// Go to Chat
+	$scope.goToChat = function() {
+		$location.path("/chat");
+	}
+	
 	// Disconnect user
 	$scope.disconnectUser = function() {
 		$cookies.remove("connectedUser");
@@ -318,11 +323,67 @@ appControllers.controller("updateArticleController", ["$scope", "$http", "$route
 		}
 	}
 	
+	// Cancel Update
 	$scope.cancel = function() {
 		$scope.updateArticleMessage = "Action annulé ! \nRedirection en cours ...";
 		$cookies.remove("articleToUpdate");
 		$location.path("/timeline");
 	}
 
+}]);
+
+appControllers.controller("chatController", ["$scope", "$http", "$route", "$location", "$cookies", function($scope, $http, $route, $location, $cookies) {
+	
+	if($cookies.getObject("connectedUser") == undefined) {
+		$location.path("/");
+	}
+	else {
+		if($cookies.getObject("articleToUpdate") !== undefined) {
+			$location.path("/timeline/updateArticle");
+		}
+		else {
+			// CREATE A REFERENCE TO FIREBASE
+			var messagesRef = new Firebase("https://nlaops5lsln.firebaseio-demo.com/");
+			
+			//CLEAR FIREBASE
+			//messagesRef.remove();
+			
+			// CLEAR MESSAGE LIST
+			$scope.messages = [];
+			
+			// Add a callback that is triggered for each chat message.
+			messagesRef.limitToLast(10).on("child_added", function (snapshot) {
+				//GET DATA
+				var data = snapshot.val();
+				var messageToDisplay = {
+					owner : data.owner,
+					text : data.text,
+					dateOfCreation : "" + Math.round((((new Date().getTime() - data.dateOfCreation) % 86400000) % 3600000) / 60000)
+				}
+				
+				//ADD MESSAGE
+				$scope.messages.unshift(messageToDisplay);
+			});
+		}
+	}
+	
+	// Return to timeline
+	$scope.returnToTimeline = function() {
+		$location.path("/timeline");
+	}
+	
+	$scope.sendMessage = function(event) {
+		if(event.keyCode === 13) {
+			var messageToSend = {
+				owner : $cookies.getObject("connectedUser").pseudo,
+				text : $scope.messageInput,
+				dateOfCreation : new Date().getTime()
+			}
+			//SAVE DATA TO FIREBASE AND EMPTY FIELD
+			messagesRef.push(messageToSend);
+			$scope.messageInput = "";
+		}
+	}
+	
 }]);
 

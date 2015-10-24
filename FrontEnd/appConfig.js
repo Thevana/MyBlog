@@ -14,6 +14,10 @@ myBlogApp.config(["$routeProvider", function($routeProvider) {
 		templateUrl : "updateArticle.html",
 		controller: "updateArticleController"
 	})
+	.when("/chat", {
+		templateUrl : "chat.html",
+		controller: "chatController"
+	})
 	.otherwise({
 		redirectTo : "/"
 	});
