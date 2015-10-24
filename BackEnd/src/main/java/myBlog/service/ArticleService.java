@@ -1,4 +1,4 @@
-package myBlog.api;
+package myBlog.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

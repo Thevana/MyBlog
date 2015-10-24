@@ -1,4 +1,4 @@
-package myBlog.api;
+package myBlog.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +22,7 @@ public class UserService {
 	
 	private static long userIdCounter = 0;
 	private static ArrayList<User> users = new ArrayList<User>();
+	private static ArrayList<User> connectedUsers = new ArrayList<User>();
 	
 	@GET
 	@Path("all")
@@ -75,10 +76,26 @@ public class UserService {
 	public long authenticate(@RequestBody User userToAuthenticate) {
 		for(User user : users) {
 			if(user.getPseudo().equals(userToAuthenticate.getPseudo()) && user.getPassword().equals(userToAuthenticate.getPassword())) {
-				return user.getId();
+				if(connectedUsers.add(user)) {
+					return user.getId();
+				}
+				return -1;
 			}
 		}
 		return -1;
+	}
+	
+	@POST
+	@Path("disconnectUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public boolean disconnectUser(@QueryParam("id") long id) {
+		for(User user : users) {
+			if(user.getId() == id) {
+				return connectedUsers.remove(user);
+			}
+		}
+		return false;
 	}
 	
 }

@@ -11,7 +11,7 @@ public class ApplicationConfig {
 	@Named
 	static class JerseyConfig extends ResourceConfig {
 		public JerseyConfig() {
-			this.packages("myBlog.api");
+			this.packages("myBlog.service");
 		}
 	}
 	

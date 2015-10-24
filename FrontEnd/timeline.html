@@ -1,54 +1,68 @@
-<div ng-controller="timelineController">
+<!-- @todo (début) : retirer les lignes suivantes avant la livraison -->
+<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- @todo (fin) -->
+
+<div ng-controller="timelineController" class="col-md-12">
 	
-	<div>
-		<p>
-			{{header}}&nbsp;&nbsp;<button ng-click="disconnectUser()">Se déconnecter</button>
-		</p>
+	<h2 class="text-primary text-center">{{header}}</h2>
+	
+	<div class="col-md-10 col-md-offset-10">
+		<button ng-click="disconnectUser()" class="btn btn-danger">Se déconnecter</button>
 	</div>
 	
-	<div>
-		<h2>Ajouter un article</h2>
-		
-		<p>
-			<input type="text" size="67" placeholder="Titre" ng-model="title"/>
-			<br/>
-			<textarea type="text" style="resize : none" rows="5" cols="50" placeholder="Article" ng-model="text"></textarea>
-			<button ng-click="addArticle()">Ajouter</button>
-			<pre>{{addArticleMessage}}</pre>
-		</p>
-	</div>
+	<h3 class="col-md-10 col-md-offset-2">Ajouter un article</h3>
+	<form>
+		<div class="col-md-8 col-md-offset-2">
+			<div class="form-group">
+				<label> Titre </label>
+				<input type="text" placeholder="Titre de l'article" ng-model="title" class="form-control"/>
+			</div>
+		</div>
+		<div class="col-md-8 col-md-offset-2">
+			<div class="form-group">
+				<label> Texte </label>
+				<textarea type="text" rows="5" placeholder="Texte de l'article" class="form-control" ng-model="text"></textarea>
+			</div>
+		</div>
+		<div class="col-md-8 col-md-offset-2">
+			<button ng-click="addArticle()" class="btn btn-primary btn-lg btn-block">Ajouter</button>
+			<pre class="alert alert-danger">{{addArticleMessage}}</pre>
+		</div>
+	</form>
 	
-	<div ng-show="showTimelineState">
-		<h2>Timeline</h2>
+	<div ng-show="showTimelineState" class="col-md-10 col-md-offset-2">
+		<h3>Timeline</h3>
 		
 		<table>
 			<tr ng-repeat="article in articles">
-				<td style="border : 0.063em solid black" ng-init="setOwnerPseudoForObject(article.ownerId, article)">
-				
-					<h3 align="center">{{article.title}}</h3>
-					
-					<pre>{{article.text}}</pre>
-					
-					<p align="right" style="font-style : italic; font-size : 0.625em">
-						Article créé/modifié le&nbsp;{{article.dateOfLastUpdate}} | Par&nbsp;{{article.ownerPseudo}}
-					</p>
-					
-					<button ng-click="addComment(article.id)">Commenter</button>
-					<button ng-show="showAction(article.ownerId)" ng-click="openUpdateArticle(article.id, article.title, article.text)">Modifier</button>
-					<button ng-show="showAction(article.ownerId)" ng-click="deleteArticle(article.id)">Supprimer</button>
-					
-					<ul style="border : 0.063em solid black" ng-repeat="comment in article.comments">
+				<td  ng-init="setOwnerPseudoForObject(article.ownerId, article)">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h4 class="text-center">{{article.title}}</h4>
+						</div>
+						<div class="panel-body "> 
+							<pre>{{article.text}}</pre>
+							<p align="right" style="font-style : italic; font-size : 0.625em">
+								Créé/modifié le&nbsp;{{article.dateOfLastUpdate}} | Par&nbsp;{{article.ownerPseudo}}
+							</p>
+						</div>
+						<div class="col-md-offset-4">
+							<button ng-click="addComment(article.id)" class="btn btn-primary">Commenter</button>
+							<button ng-show="showAction(article.ownerId)" ng-click="openUpdateArticle(article.id, article.title, article.text)" class="btn btn-success">Modifier</button>
+							<button ng-show="showAction(article.ownerId)" ng-click="deleteArticle(article.id)" class="btn btn-danger">Supprimer</button>
+						</div>
+					</div>
+					<ul  ng-repeat="comment in article.comments">
 						<li style="list-style-type : none; padding-right : 10%;" ng-init="setOwnerPseudoForObject(comment.ownerId, comment)">
 							
 							<pre>{{comment.text}}</pre>
 							
 							<p align="right" style="font-style : italic; font-size : 0.625em">
-								Commentaire créé/modifié le&nbsp;{{comment.dateOfLastUpdate}} | Par&nbsp;{{comment.ownerPseudo}}
+								Créé/modifié le&nbsp;{{comment.dateOfLastUpdate}} | Par&nbsp;{{comment.ownerPseudo}}
 							</p>
-							
-							<button ng-show="showAction(comment.ownerId)" ng-click="updateComment(comment.id, comment.text)">Modifier</button>
-							<button ng-show="showAction(comment.ownerId)" ng-click="deleteComment(comment.id)">Supprimer</button>
-						
+							<button ng-show="showAction(comment.ownerId)" ng-click="updateComment(comment.id, comment.text)" class="btn btn-success">Modifier</button>
+							<button ng-show="showAction(comment.ownerId)" ng-click="deleteComment(comment.id)" class="btn btn-danger">Supprimer</button>
 						</li>
 					</ul>
 					

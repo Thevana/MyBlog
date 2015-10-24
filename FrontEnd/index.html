@@ -5,7 +5,8 @@
 	<head>
 		<title>MyBlog</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<!--<link href="index.css" rel="stylesheet" type="text/css"/>-->
+		<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="https://code.angularjs.org/1.4.6/angular.min.js"></script>
 		<script type="text/javascript" src="https://code.angularjs.org/1.4.6/angular-route.min.js"></script>
 		<script type="text/javascript" src="https://code.angularjs.org/1.4.6/angular-cookies.min.js"></script>
@@ -14,17 +15,15 @@
 	</head>
 
 	<body>
-		<div style="width : 1000px; height : 100%">
-			<div>
-				<h1>MyBlog</h1>
-			</div>
-			
-			<div ng-view>
-			</div>
-			
-			<div>
-				<p>Copyright © 2015 by J&amp;Z Corporation</p>
-			</div>
+		<div class="navbar navbar-inverse">
+			<h1 class="text-primary text-center">MyBlog</h1>
+		</div>
+		
+		<div ng-view>
+		</div>
+		
+		<div>
+			<p class="col-md-6 col-md-offset-3">Copyright © 2015 by Olivier GHAFARI - Zakaria SOUDI - Jonsan UTHTHIYUTHTHATHEVANAR</p>
 		</div>
 	</body>
 

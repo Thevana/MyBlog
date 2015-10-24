@@ -1,11 +1,29 @@
+<!-- @todo (début) : retirer les lignes suivantes avant la livraison -->
+<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- @todo (fin) -->
+
 <div ng-controller="homeController">
-	<h2>Authentification / Inscription</h2>
-	
-	<p>
-		<input type="text" placeholder="Pseudo" ng-model="pseudo"/>
-		<input type="password" placeholder="Mot de passe" ng-model="password"/>
-		<button ng-click="authentificateUser()">S'authentifier</button>
-		<button ng-click="addUser()">S'inscrire</button>
-		<pre>{{homeMessage}}</pre>
-	</p>
+	<div class="col-md-12">
+		<div class="col-md-10 col-md-offset-3">
+			<h3>Authentification / Inscription</h3>
+		</div>
+		<form>
+			<div class="col-md-6 col-md-offset-3">
+				<div class="form-group">
+					<label> Pseudo </label>
+					<input type="text" placeholder="Votre pseudo" class="form-control" ng-model="pseudo" />
+				</div>
+				<div class="form-group">
+					<label> Mot de passe </label>
+					<input type="password" placeholder="Votre mot de passe" class="form-control" ng-model="password"/>
+				</div>
+			</div>
+			<div class="col-md-6 col-md-offset-3">
+				<button ng-click="authentificateUser()" class="btn btn-primary">S'authentifier</button>
+				<button ng-click="addUser()" class="btn btn-success">S'inscrire</button>
+				<pre class="alert alert-danger ">{{homeMessage}}</pre>
+			</div>
+		</form>
+	</div>
 </div>

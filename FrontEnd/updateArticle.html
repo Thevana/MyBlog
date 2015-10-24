@@ -1,12 +1,27 @@
-<div ng-controller="updateArticleController">
-	<h2>Modification de l'article selectionné</h2>
+<!-- @todo (début) : retirer les lignes suivantes avant la livraison -->
+<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<!-- @todo (fin) -->
 
-	<p>
-		<input type="text" size="67" placeholder="Titre" ng-model="updatedArticleTitle"/>
-		<br/>
-		<textarea type="text" style="resize : none" rows="5" cols="50" placeholder="Article" ng-model="updatedArticleText"></textarea>
-		<button ng-click="updateArticle()">Modifier</button>
-		<button ng-click="cancel()">Annuler</button>
-		<pre>{{updateArticleMessage}}</pre>
-	</p>
+<div ng-controller="updateArticleController">
+	<h3 class="col-md-offset-5">Edition de l'article</h3>
+	<form>
+		<div class="col-md-8 col-md-offset-2">
+			<div class="form-group">
+				<label> Titre </label>
+				<input type="text" size="67" placeholder="Titre de l'article" ng-model="updatedArticleTitle" class="form-control"/>
+			</div>
+		</div>
+		<div class="col-md-8 col-md-offset-2">
+			<div class="form-group">
+				<label> Texte </label>
+				<textarea type="text" style="resize : none" rows="5" cols="50" placeholder="Texte de l'article" class="form-control" ng-model="updatedArticleText"></textarea>
+			</div>
+		</div>
+		<div class="col-md-8 col-md-offset-2">
+			<button ng-click="updateArticle()" class="btn btn-success">Modifier</button>
+			<button ng-click="cancel()" class="btn btn-danger">Annuler</button>
+			<pre class="alert alert-danger ">{{updateArticleMessage}}</pre>
+		</div>
+	</form>
 </div>
