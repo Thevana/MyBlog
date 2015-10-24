@@ -44,7 +44,7 @@
 						<div class="panel-body "> 
 							<pre>{{article.text}}</pre>
 							<p align="right" style="font-style : italic; font-size : 0.625em">
-								Créé/modifié le&nbsp;{{article.dateOfLastUpdate}} | Par&nbsp;{{article.ownerPseudo}}
+								Article créé/modifié le&nbsp;{{article.dateOfLastUpdate}} | Par&nbsp;{{article.ownerPseudo}}
 							</p>
 						</div>
 						<div class="col-md-offset-4">
@@ -59,7 +59,7 @@
 							<pre>{{comment.text}}</pre>
 							
 							<p align="right" style="font-style : italic; font-size : 0.625em">
-								Créé/modifié le&nbsp;{{comment.dateOfLastUpdate}} | Par&nbsp;{{comment.ownerPseudo}}
+								Commentaire créé/modifié le&nbsp;{{comment.dateOfLastUpdate}} | Par&nbsp;{{comment.ownerPseudo}}
 							</p>
 							<button ng-show="showAction(comment.ownerId)" ng-click="updateComment(comment.id, comment.text)" class="btn btn-success">Modifier</button>
 							<button ng-show="showAction(comment.ownerId)" ng-click="deleteComment(comment.id)" class="btn btn-danger">Supprimer</button>
